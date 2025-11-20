@@ -1,0 +1,24 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# PyInstaller output (Мы выкладываем EXE в Releases, а не в код)
+build/
+dist/
+*.spec
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
