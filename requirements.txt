@@ -1,6 +1,5 @@
 customtkinter==5.2.2
 tkinterdnd2-universal==1.7.3
-pillow>=10.0.0
 beautifulsoup4==4.12.3
 lxml==5.1.0
 pikepdf==8.13.0

@@ -1,30 +1,39 @@
-# 📱 Telegram Merger & PDF Splitter v1.0
+# 📱 Telegram → NotebookLM v2.0
 
-![Version](https://img.shields.io/badge/version-1.0-blue) ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue) ![Python](https://img.shields.io/badge/python-3.11-yellow)
+![Version](https://img.shields.io/badge/version-2.0-blue) ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue) ![Python](https://img.shields.io/badge/python-3.11-yellow)
 
-Утилита для обработки экспортированных чатов Telegram. Позволяет объединять сотни HTML файлов с историей чата в один читаемый документ, готовить их к печати в PDF, а также нарезать большие PDF файлы для отправки в NotebookLM.
+Утилита для экспорта чатов Telegram в чистый TXT-формат,
+оптимизированный для загрузки в NotebookLM.
 
 Разработано специально для **HardCore Affiliate Club**.
 
 ---
 
-## 🚀 Возможности
+## 🚀 Как это работает
 
-### 1. HTML Merger (Объединение чатов)
-* **Умная сортировка:** Правильно расставляет файлы `messages.html`, `messages2.html` и т.д. по порядку.
-* **Очистка мусора:** Удаляет аватарки, сервисные сообщения ("joined group", "pinned message") и лишние отступы для экономии контекста нейросетей.
-* **Встраивание медиа:** Опция конвертации картинок в Base64 (весь чат в одном файле).
-* **PDF Ready:** Оптимизированный CSS для идеальной печати через браузер (Ctrl+P).
+1. Экспортируйте чат из Telegram Desktop (формат HTML)
+2. Перетащите папку с экспортом в окно программы
+3. Нажмите **"ЭКСПОРТ В TXT"**
+4. Загрузите полученные TXT файлы в NotebookLM
 
-### 2. PDF Splitter (Нарезка)
-* **Smart Split:** Разделяет огромные PDF файлы на части.
-* **Лимит NotebookLM:** Автоматически подгоняет части под размер **<190 МБ**, необходимый для NotebookLM.
-* **Защита от ошибок:** Не обрабатывает файлы, которые и так меньше лимита.
+Никаких браузеров. Никаких PDF. Один клик.
 
-### 3. Интерфейс (UI)
-* Современный дизайн (CustomTkinter).
-* Поддержка Drag & Drop (перетаскивание файлов и папок).
-* Темная и Светлая темы (синхронизация с системой).
+---
+
+## ✨ Возможности
+
+- **Умная сортировка** — правильный порядок файлов:
+  `messages.html` → `messages2.html` → и т.д.
+- **Метаданные** — каждое сообщение сохраняет автора и дату:
+  `[Имя пользователя | 01.01.2026 12:34]`
+- **Дедупликация** — убирает повторяющиеся сообщения
+  на стыках файлов
+- **Авто-нарезка** — делит большие чаты на части по 5 MB,
+  оптимальный размер для NotebookLM
+- **Очистка мусора** — удаляет сервисные сообщения
+  ("вступил в группу", "закреплено сообщение")
+- **Drag & Drop** — просто перетащи папку в окно
+- **Тёмная/светлая тема** — синхронизация с системой
 
 ---
 
@@ -33,76 +42,46 @@
 Проект использует **Anaconda / Miniconda**.
 
 ### 1. Подготовка окружения
-Откройте **Anaconda Prompt** и выполните команды:
-
 ```bash
-# Создание окружения
-conda create -n telegram-merger-gui python=3.11
-conda activate telegram-merger-gui
-
-# Установка зависимостей
+conda create -n telegram-nlm python=3.11
+conda activate telegram-nlm
 pip install -r requirements.txt
 ```
 
-### 2. Запуск исходного кода
+### 2. Запуск
 ```bash
 python main.py
 ```
 
 ---
 
-## 📦 Сборка в EXE (Build)
+## 📦 Сборка в EXE
 
-Для создания одиночного исполняемого файла (`.exe`) используется PyInstaller. 
-Нам необходимо вручную указать путь к библиотеке `tkinterdnd2`, чтобы она корректно упаковалась в EXE.
-
-**1. Найдите путь к библиотеке:**
-Выполните эту команду в консоли, чтобы узнать, где лежит пакет:
+**1. Узнать путь к tkinterdnd2:**
 ```bash
 python -c "import tkinterdnd2, os; print(os.path.dirname(tkinterdnd2.__file__))"
 ```
-*Скопируйте полученный путь.*
 
-**2. Запустите сборку:**
-Замените `<ПУТЬ_ИЗ_ШАГА_1>` на ваш путь:
-
+**2. Собрать EXE** (подставить путь из шага 1):
 ```bash
-pyinstaller --noconfirm --onefile --windowed --name "TelegramMerger_v1.0" --add-data "<ПУТЬ_ИЗ_ШАГА_1>;tkinterdnd2" --hidden-import "pikepdf" --hidden-import "PIL" --hidden-import "customtkinter" --clean --icon=NONE main.py
+pyinstaller --noconfirm --onefile --windowed \
+  --name "TelegramToNotebookLM_v2.0" \
+  --add-data "<ПУТЬ_К_TKINTERDND2>;tkinterdnd2" \
+  --hidden-import "customtkinter" \
+  --clean --icon=NONE main.py
 ```
 
 ---
 
-## 📋 Зависимости (requirements.txt)
+## 📋 Зависимости
 
-Мы используем минимальный набор библиотек для максимальной производительности:
-
-* `customtkinter==5.2.2` — Современный UI.
-* `tkinterdnd2-universal==1.7.3` — Drag & Drop для Windows.
-* `pillow>=10.0.0` — Работа с изображениями.
-* `beautifulsoup4==4.12.3` — Парсинг HTML.
-* `lxml==5.1.0` — Быстрый движок для BS4.
-* `pikepdf==8.13.0` — Быстрая обработка PDF (нарезка).
-* `pyinstaller==6.4.0` — Сборщик EXE.
+- `customtkinter==5.2.2` — UI
+- `tkinterdnd2-universal==1.7.3` — Drag & Drop
+- `beautifulsoup4==4.12.3` — парсинг HTML
+- `lxml==5.1.0` — быстрый движок для BS4
+- `pyinstaller==6.4.0` — сборка EXE
 
 ---
 
-## 📝 Как пользоваться
-
-### Шаг 1: Объединение (Merge)
-1.  Экспортируйте чат из Telegram Desktop (формат HTML).
-2.  Перетащите **папку** с чатом в окно программы.
-3.  Нажмите **"СОЗДАТЬ MERGED HTML"**.
-4.  После завершения нажмите **"🖨️ Печать в PDF"**.
-5.  В браузере нажмите `Ctrl + P` и сохраните как PDF.
-
-### Шаг 2: Нарезка (Split)
-1.  Если итоговый PDF получился слишком большим, перейдите на вкладку **"2. PDF Splitter"**.
-2.  Перетащите PDF файл.
-3.  Нажмите **"РАЗДЕЛИТЬ"**.
-4.  Получите файлы `_part1.pdf`, `_part2.pdf` в той же папке.
-
----
-
-## © Авторские права
-
-[HardCore Affiliate Club](https://t.me/hardcoreaffiliateclub)
+## © HardCore Affiliate Club, 2023-2026
+[t.me/hardcoreaffiliateclub](https://t.me/hardcoreaffiliateclub)
