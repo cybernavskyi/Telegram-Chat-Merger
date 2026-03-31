@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 6 python main.py)",
+      "Bash(timeout 6 conda run -n telegram-nlm python main.py)",
+      "Bash(conda env:*)",
+      "Bash(conda run -n telegram-merger-gui python -c \":*)"
+    ]
+  }
+}
